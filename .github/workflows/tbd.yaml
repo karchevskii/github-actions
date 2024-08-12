@@ -65,8 +65,8 @@ jobs:
             karchevskii/github-actions:${{ github.ref_name }}
 
   deploy:
-    needs: build
-    runs-on: ubuntu-latest
+    needs: [test, build]
+    runs-on: self-hosted
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
