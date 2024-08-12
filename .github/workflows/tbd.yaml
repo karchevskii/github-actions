@@ -83,5 +83,18 @@ jobs:
       - name: Pull Docker image
         run: docker pull karchevskii/github-actions:latest
 
+      - name: Check if container is running
+        id: check_container
+        run: |
+          if docker container inspect myapp-container; then
+            echo "Container exists, stopping and removing it..."
+            docker stop myapp-container
+            docker rm myapp-container
+            echo "::set-output name=exists::true"
+          else
+            echo "Container does not exist."
+            echo "::set-output name=exists::false"
+          fi
+
       - name: Run Docker container
-        run: docker run -d -p 3000:3000 karchevskii/github-actions:latest
+        run: docker run -d -p 3000:3000 --name myapp-container karchevskii/github-actions:latest
